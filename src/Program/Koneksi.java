@@ -1,7 +1,6 @@
 package Program;
 
 import java.sql.*;
-import javax.swing.*;
 
 public class Koneksi {
 
@@ -22,4 +21,5 @@ public class Koneksi {
         }
         return koneksi;
     }
+
 }

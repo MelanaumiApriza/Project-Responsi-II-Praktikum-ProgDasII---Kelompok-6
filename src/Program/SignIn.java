@@ -158,9 +158,8 @@ public class SignIn extends javax.swing.JFrame {
             ResultSet hasil = stat.executeQuery(sql);
             if (hasil.next()) {
                 if (Txt_Username.getText().equals(hasil.getString("Username")) && Txt_Password.getText().equals(hasil.getString("Password"))) {
-                    JOptionPane.showMessageDialog(null, "Sign In Success");
                     this.dispose();
-                    Menu obj = new Menu();
+                    Antrian obj = new Antrian();
                     obj.setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid Username Or Password");

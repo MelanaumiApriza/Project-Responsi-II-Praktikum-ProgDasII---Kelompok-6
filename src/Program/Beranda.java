@@ -6,7 +6,7 @@ import javax.swing.*;
 public class Beranda extends javax.swing.JFrame {
 
     private Connection conn = new Koneksi().connect();
-    
+
     public Beranda() {
         initComponents();
         Btn_Pegawai.setEnabled(true);
@@ -35,7 +35,7 @@ public class Beranda extends javax.swing.JFrame {
         Btn_Pegawai.setBackground(new java.awt.Color(255, 153, 153));
         Btn_Pegawai.setFont(new java.awt.Font("Bite _ Bullet", 1, 36)); // NOI18N
         Btn_Pegawai.setForeground(new java.awt.Color(204, 204, 255));
-        Btn_Pegawai.setText("PEGAWAI");
+        Btn_Pegawai.setText("EMPLOYEE");
         Btn_Pegawai.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Btn_PegawaiActionPerformed(evt);
@@ -45,7 +45,7 @@ public class Beranda extends javax.swing.JFrame {
         Btn_Pesan.setBackground(new java.awt.Color(255, 153, 153));
         Btn_Pesan.setFont(new java.awt.Font("Bite _ Bullet", 1, 36)); // NOI18N
         Btn_Pesan.setForeground(new java.awt.Color(204, 204, 255));
-        Btn_Pesan.setText("PESAN");
+        Btn_Pesan.setText("CUSTOMER");
         Btn_Pesan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Btn_PesanActionPerformed(evt);
@@ -55,7 +55,7 @@ public class Beranda extends javax.swing.JFrame {
         Btn_Keluar.setBackground(new java.awt.Color(255, 153, 153));
         Btn_Keluar.setFont(new java.awt.Font("Bite _ Bullet", 1, 36)); // NOI18N
         Btn_Keluar.setForeground(new java.awt.Color(204, 204, 255));
-        Btn_Keluar.setText("KELUAR");
+        Btn_Keluar.setText("EXIT");
         Btn_Keluar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Btn_KeluarActionPerformed(evt);
@@ -121,7 +121,7 @@ public class Beranda extends javax.swing.JFrame {
 
     private void Btn_PesanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_PesanActionPerformed
         this.dispose();
-        Menu reg = new Menu();
+        Antrian reg = new Antrian();
         reg.setVisible(true);
     }//GEN-LAST:event_Btn_PesanActionPerformed
 

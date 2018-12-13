@@ -1,12 +1,23 @@
 package Program;
 
 import java.sql.*;
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 public class SignUp extends javax.swing.JFrame {
 
+    private Connection conn = new Koneksi().connect();
+
     public SignUp() {
         initComponents();
+        Txt_IDPeg.setEnabled(true);
+        Txt_NamaPeg.setEnabled(true);
+        Txt_AlamatPeg.setEnabled(true);
+        Txt_username.setEnabled(true);
+        Txt_password.setEnabled(true);
+        Btn_SignIn.setEnabled(true);
+        Btn_SignUp.setEnabled(true);
+        Btn_TryAgain.setEnabled(true);
+        Btn_Close.setEnabled(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -25,8 +36,10 @@ public class SignUp extends javax.swing.JFrame {
         Txt_AlamatPeg = new javax.swing.JTextField();
         Txt_username = new javax.swing.JTextField();
         Txt_password = new javax.swing.JTextField();
+        Btn_TryAgain = new javax.swing.JButton();
         Btn_SignUp = new javax.swing.JButton();
-        Btn_SignUp1 = new javax.swing.JButton();
+        Btn_SignIn = new javax.swing.JButton();
+        Btn_Close = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,23 +69,43 @@ public class SignUp extends javax.swing.JFrame {
         Lb_Password.setForeground(new java.awt.Color(255, 153, 153));
         Lb_Password.setText("Password                 :");
 
+        Btn_TryAgain.setBackground(new java.awt.Color(255, 153, 153));
+        Btn_TryAgain.setFont(new java.awt.Font("Bahnschrift", 1, 18)); // NOI18N
+        Btn_TryAgain.setForeground(new java.awt.Color(204, 204, 255));
+        Btn_TryAgain.setText("TRY AGAIN");
+        Btn_TryAgain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_TryAgainActionPerformed(evt);
+            }
+        });
+
         Btn_SignUp.setBackground(new java.awt.Color(255, 153, 153));
         Btn_SignUp.setFont(new java.awt.Font("Bahnschrift", 1, 18)); // NOI18N
         Btn_SignUp.setForeground(new java.awt.Color(204, 204, 255));
-        Btn_SignUp.setText("TRY AGAIN");
+        Btn_SignUp.setText("SIGN UP");
         Btn_SignUp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Btn_SignUpActionPerformed(evt);
             }
         });
 
-        Btn_SignUp1.setBackground(new java.awt.Color(255, 153, 153));
-        Btn_SignUp1.setFont(new java.awt.Font("Bahnschrift", 1, 18)); // NOI18N
-        Btn_SignUp1.setForeground(new java.awt.Color(204, 204, 255));
-        Btn_SignUp1.setText("SIGN UP");
-        Btn_SignUp1.addActionListener(new java.awt.event.ActionListener() {
+        Btn_SignIn.setBackground(new java.awt.Color(255, 153, 153));
+        Btn_SignIn.setFont(new java.awt.Font("Bahnschrift", 1, 18)); // NOI18N
+        Btn_SignIn.setForeground(new java.awt.Color(204, 204, 255));
+        Btn_SignIn.setText("SIGN IN");
+        Btn_SignIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Btn_SignUp1ActionPerformed(evt);
+                Btn_SignInActionPerformed(evt);
+            }
+        });
+
+        Btn_Close.setBackground(new java.awt.Color(255, 153, 153));
+        Btn_Close.setFont(new java.awt.Font("Bahnschrift", 1, 18)); // NOI18N
+        Btn_Close.setForeground(new java.awt.Color(204, 204, 255));
+        Btn_Close.setText("EXIT");
+        Btn_Close.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_CloseActionPerformed(evt);
             }
         });
 
@@ -84,44 +117,50 @@ public class SignUp extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(Pn_BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Pn_BackgroundLayout.createSequentialGroup()
-                        .addComponent(Lb_IDPeg)
+                        .addComponent(Lb_Password)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Txt_IDPeg))
-                    .addGroup(Pn_BackgroundLayout.createSequentialGroup()
-                        .addComponent(Lb_NamaPeg)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Txt_NamaPeg))
-                    .addGroup(Pn_BackgroundLayout.createSequentialGroup()
-                        .addComponent(Lb_AlamatPeg)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Txt_AlamatPeg))
+                        .addGroup(Pn_BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(Pn_BackgroundLayout.createSequentialGroup()
+                                .addComponent(Btn_SignUp, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(Btn_TryAgain))
+                            .addComponent(Txt_password)
+                            .addGroup(Pn_BackgroundLayout.createSequentialGroup()
+                                .addComponent(Btn_SignIn, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(97, 97, 97)
+                                .addComponent(Btn_Close, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(Pn_BackgroundLayout.createSequentialGroup()
                         .addComponent(Lb_UserName)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Txt_username))
                     .addGroup(Pn_BackgroundLayout.createSequentialGroup()
-                        .addComponent(Lb_SignUp)
-                        .addGap(0, 24, Short.MAX_VALUE))
-                    .addGroup(Pn_BackgroundLayout.createSequentialGroup()
-                        .addComponent(Lb_Password)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(Pn_BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(Pn_BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(Pn_BackgroundLayout.createSequentialGroup()
-                                .addComponent(Btn_SignUp1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(Btn_SignUp))
-                            .addComponent(Txt_password))))
-                .addContainerGap())
+                                .addComponent(Lb_AlamatPeg)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Txt_AlamatPeg))
+                            .addGroup(Pn_BackgroundLayout.createSequentialGroup()
+                                .addComponent(Lb_NamaPeg)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Txt_NamaPeg))
+                            .addGroup(Pn_BackgroundLayout.createSequentialGroup()
+                                .addComponent(Lb_IDPeg)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Txt_IDPeg, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(Pn_BackgroundLayout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(Lb_SignUp)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(12, 12, 12))
         );
         Pn_BackgroundLayout.setVerticalGroup(
             Pn_BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Pn_BackgroundLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(Lb_SignUp)
+                .addGap(38, 38, 38)
                 .addGroup(Pn_BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(Pn_BackgroundLayout.createSequentialGroup()
-                        .addComponent(Lb_SignUp)
-                        .addGap(41, 41, 41)
-                        .addComponent(Lb_IDPeg))
+                    .addComponent(Lb_IDPeg)
                     .addComponent(Txt_IDPeg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(Pn_BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -141,16 +180,20 @@ public class SignUp extends javax.swing.JFrame {
                     .addComponent(Txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(Pn_BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Btn_SignUp1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Btn_SignUp, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(Btn_SignUp, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Btn_TryAgain, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(Pn_BackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Btn_Close, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Btn_SignIn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Pn_Background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Pn_Background, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,22 +203,55 @@ public class SignUp extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void Btn_TryAgainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_TryAgainActionPerformed
+        int yakin = JOptionPane.showConfirmDialog(null, "Are You Sure To Try Again?", "Konfirmasi", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (yakin == JOptionPane.YES_OPTION) {
+            Txt_IDPeg.setText("");
+            Txt_NamaPeg.setText("");
+            Txt_AlamatPeg.setText("");
+            Txt_username.setText("");
+            Txt_password.setText("");
+            Txt_IDPeg.requestFocus();
+        }
+    }//GEN-LAST:event_Btn_TryAgainActionPerformed
+
     private void Btn_SignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_SignUpActionPerformed
-        int yakin = JOptionPane.showConfirmDialog(null, "Are You Sure To Try Again?","Konfirmasi", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if(yakin == JOptionPane.YES_OPTION) {
-                Txt_IDPeg.setText("");
-                Txt_NamaPeg.setText("");
-                Txt_AlamatPeg.setText("");
-                Txt_username.setText("");
-                Txt_password.setText("");
-                Txt_IDPeg.requestFocus();
+        String sql = "INSERT INTO Pegawai VALUES (?,?,?,?,?)";
+        try {
+            if (Txt_password.getText().isEmpty() || Txt_IDPeg.getText().isEmpty() || Txt_NamaPeg.getText().isEmpty() || Txt_AlamatPeg.getText().isEmpty() || Txt_username.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "SIGN UP FAILED! ANY DATA YOU MUST ENTER AGAIN!");
+            } else {
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.setString(1, Txt_IDPeg.getText());
+                stat.setString(2, Txt_NamaPeg.getText());
+                stat.setString(3, Txt_AlamatPeg.getText());
+                stat.setString(4, Txt_username.getText());
+                stat.setString(5, Txt_password.getText());
+
+                stat.executeUpdate();
+                JOptionPane.showMessageDialog(null, "SUCCESS TO SIGN UP");
+                this.dispose();
+                SignIn obj = new SignIn();
+                obj.setVisible(true);
             }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "ERROR TO SIGN UP" + e);
+        }
     }//GEN-LAST:event_Btn_SignUpActionPerformed
 
-    private void Btn_SignUp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_SignUp1ActionPerformed
-        JOptionPane.showMessageDialog(null, "Success To Sign Up","Information", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_Btn_SignUp1ActionPerformed
-   
+    private void Btn_SignInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_SignInActionPerformed
+        this.dispose();
+        SignIn reg = new SignIn();
+        reg.setVisible(true);
+    }//GEN-LAST:event_Btn_SignInActionPerformed
+
+    private void Btn_CloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_CloseActionPerformed
+        int selectedOption = JOptionPane.showConfirmDialog(null, "Apakah Anda Akan Keluar Dari Aplikasi ?", "Tutup Aplikasi", JOptionPane.YES_NO_OPTION);
+        if (selectedOption == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }//GEN-LAST:event_Btn_CloseActionPerformed
+
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -186,8 +262,10 @@ public class SignUp extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Btn_Close;
+    private javax.swing.JButton Btn_SignIn;
     private javax.swing.JButton Btn_SignUp;
-    private javax.swing.JButton Btn_SignUp1;
+    private javax.swing.JButton Btn_TryAgain;
     private javax.swing.JLabel Lb_AlamatPeg;
     private javax.swing.JLabel Lb_IDPeg;
     private javax.swing.JLabel Lb_NamaPeg;
