@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -14,6 +15,7 @@ public class Menu extends javax.swing.JFrame {
 
     private Connection conn = new Koneksi().connect();
     private DefaultTableModel tabmode;
+    static String dataPassing;
 
     protected void aktif() {
         Txt_NoPesan.setEnabled(true);
@@ -32,7 +34,7 @@ public class Menu extends javax.swing.JFrame {
         Txt_JmlPesan.setText("");
         Txt_TotalBayar.setText("");
     }
-    
+
     protected void datatable() {
         Object[] Baris = {"Menu", "Harga Satuan"};
         tabmode = new DefaultTableModel(null, Baris);
@@ -51,12 +53,12 @@ public class Menu extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }
-    
+
     protected void datatable1() {
         Object[] Baris = {"Menu", "Harga Satuan", "jumlah", "Harga Total"};
         tabmode = new DefaultTableModel(null, Baris);
         Tbl_Pesan.setModel(tabmode);
-        String sql = "SELECT menu, hargasatuan, jumlah, hargatotal FROM detailpesan";
+        String sql = "SELECT menu, hargasatuan, jumlah, hargatotal FROM detailpesan WHERE NomorPesan = " + dataPassing + ";";
         try {
             java.sql.Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
@@ -73,22 +75,43 @@ public class Menu extends javax.swing.JFrame {
         }
     }
 
-    public void Total() throws SQLException {
-        int JumlahBaris = Tbl_Pesan.getRowCount();
-        int Total = 0;
-        int Harga_Barang;
-        TableModel tableModel;
-        tableModel = Tbl_Pesan.getModel();
-        for (int i = 0; i < JumlahBaris; i++) {
-            Harga_Barang = Integer.parseInt(tableModel.getValueAt(i, 5).toString());
-            Total = (Total + Harga_Barang);
-            Txt_TotalBayar.setText(String.valueOf(Total));
+    public void Total() {
+        try {
+            Connection conn = new Koneksi().connect();
+
+            Statement st = conn.createStatement();
+            String sql = "SELECT SUM(hargatotal) FROM detailpesan WHERE NomorPesan = " + dataPassing + ";";
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()) {
+                int a = rs.getInt(1);
+                Txt_TotalBayar.setText("" + Integer.toString(a));
+            }
+        } catch (Exception e) {
+            System.out.println("" + e.getMessage());
         }
+    }
+    //int JumlahBaris = Tbl_Pesan.getRowCount();
+    //int TotalBiaya = 0;
+    //int jumlah, harga;
+    //TableModel tableModel;
+    //tableModel = Tbl_Pesan.getModel();
+    //for (int i = 0; i < JumlahBaris; i++) {
+    //  jumlah = Integer.parseInt(tableModel.getValueAt(i, 0).toString());
+    //harga = Integer.parseInt(tableModel.getValueAt(i, 1).toString());
+    // TotalBiaya = (TotalBiaya + (jumlah*harga));
+    //Txt_TotalBayar.setText(String.valueOf(TotalBiaya));
+    //  }
+    //}
+
+    public void AutoNomor() {
+        Txt_NoPesan.setText(dataPassing);
     }
 
     public Menu() {
         initComponents();
+        dataPassing = Antrian.no_antri;
         datatable();
+        AutoNomor();
     }
 
     @SuppressWarnings("unchecked")
@@ -388,29 +411,39 @@ public class Menu extends javax.swing.JFrame {
     private void Btn_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_CancelActionPerformed
         int yakin = JOptionPane.showConfirmDialog(null, "Are You Sure To Cancel?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (yakin == JOptionPane.YES_OPTION) {
-            Txt_NoPesan.setText("");
-            Txt_Menu.setText("");
-            Txt_HargaSatuan.setText("");
-            Txt_JmlPesan.setText("");
-            Txt_TotalBayar.setText("");
+            String sql = "DELETE FROM pesan WHERE NomorPesan = " + dataPassing + ";";
+            try {
+                PreparedStatement stat = conn.prepareStatement(sql);
+                stat.executeUpdate();
+                sql = "DELETE FROM detailpesan WHERE NomorPesan = " + dataPassing + ";";
+                stat = conn.prepareStatement(sql);
+                stat.executeUpdate();
+                JOptionPane.showMessageDialog(null, "PESANAN BERHASIL DI TUNDA");
+                Txt_NoPesan.requestFocus();
+                kosong();
+                datatable1();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "PESANAN GAGAL DI TUNDA" + e);
+            }
         }
+
     }//GEN-LAST:event_Btn_CancelActionPerformed
 
     private void Btn_OrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_OrderActionPerformed
-        String sql = "INSERT INTO detailpesan VALUES (?,?,?,?)";
+        Total();
+
+        String sql = "INSERT INTO pesan VALUES (?,?)";
+        int nopes = Integer.parseInt(Txt_NoPesan.getText());
+        int tobar = Integer.parseInt(Txt_TotalBayar.getText());
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(2, Txt_Menu.getText());
-            stat.setString(3, Txt_JmlPesan.getText());
-            stat.setString(4, Txt_HargaSatuan.getText());
-
+            stat.setString(1, Integer.toString(nopes));
+            stat.setString(2, Integer.toString(tobar));
             stat.executeUpdate();
-            JOptionPane.showMessageDialog(null, "ORDER DI PROSES");
-            kosong();
-            Txt_Menu.requestFocus();
-            datatable();
+            JOptionPane.showMessageDialog(null, "MENU DIMASUKKAN DALAM LIST ORDER");
+            Txt_NoPesan.requestFocus();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "ORDER GAGAL" + e);
+            JOptionPane.showMessageDialog(null, "MENU GAGAL DIMASUKKAN DALAM LIST ORDER" + e);
         }
     }//GEN-LAST:event_Btn_OrderActionPerformed
 
@@ -428,12 +461,13 @@ public class Menu extends javax.swing.JFrame {
         String sql = "INSERT INTO detailpesan VALUES (?,?,?,?,?)";
         int total = Integer.parseInt(Txt_HargaSatuan.getText()) * Integer.parseInt(Txt_JmlPesan.getText());
         int nopes = Integer.parseInt(Txt_NoPesan.getText());
+        int jumlah = Integer.parseInt(Txt_JmlPesan.getText());
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, Integer.toString(nopes));
             stat.setString(2, Txt_Menu.getText());
             stat.setString(3, Txt_HargaSatuan.getText());
-            stat.setString(4, Txt_JmlPesan.getText());
+            stat.setString(4, Integer.toString(jumlah));
             stat.setString(5, Integer.toString(total));
             stat.executeUpdate();
             JOptionPane.showMessageDialog(null, "MENU DIMASUKKAN DALAM LIST ORDER");

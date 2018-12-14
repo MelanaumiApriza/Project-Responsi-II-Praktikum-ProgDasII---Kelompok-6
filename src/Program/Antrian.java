@@ -5,15 +5,22 @@ import javax.swing.*;
 
 public class Antrian extends javax.swing.JFrame {
 
-    private Connection conn = new Koneksi().connect();
+    public String Antri;
+    static String no_antri;
     
+    public String getAntri() {
+        return Antri;
+    }
+
+    private Connection conn = new Koneksi().connect();
+
     public Antrian() {
         initComponents();
         Btn_Next.setEnabled(true);
         Btn_Cancel.setEnabled(true);
         AutoNomor();
     }
-    
+
     public void AutoNomor() {
         try {
             Connection conn = new Koneksi().connect();
@@ -23,7 +30,8 @@ public class Antrian extends javax.swing.JFrame {
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
                 int a = rs.getInt(1);
-                Txt_NoPesan.setText("" + Integer.toString(a + 1));
+                no_antri = Integer.toString(a + 1);
+                Txt_NoPesan.setText("" + no_antri);
             }
         } catch (Exception e) {
             System.out.println("" + e.getMessage());
@@ -141,11 +149,11 @@ public class Antrian extends javax.swing.JFrame {
     }//GEN-LAST:event_Btn_NextActionPerformed
 
     private void Btn_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_CancelActionPerformed
-        int yakin = JOptionPane.showConfirmDialog(null, "Are You Sure To Cancel?","Konfirmasi", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if(yakin == JOptionPane.YES_OPTION) {
-                Txt_NoPesan.setText("");
-                Txt_NoPesan.requestFocus();
-            }
+        int yakin = JOptionPane.showConfirmDialog(null, "Are You Sure To Cancel?", "Konfirmasi", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (yakin == JOptionPane.YES_OPTION) {
+            Txt_NoPesan.setText("");
+            Txt_NoPesan.requestFocus();
+        }
     }//GEN-LAST:event_Btn_CancelActionPerformed
 
     public static void main(String args[]) {
